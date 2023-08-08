@@ -48,3 +48,24 @@ console.log(arr3(1, 2, 3, 4, 5, 6, 7));
 var {userName} = student;
 userName = "Deep Shah";
 console.log(student.userName);
+
+// Async-await and promises
+async function output() {
+
+    console.log('a');
+    console.log('b');
+    
+    await new Promise((resolve, reject) => setTimeout(() => { 
+        console.log('c');
+        resolve();
+    }, 3000));
+    
+    await new Promise((resolve, reject) => setTimeout(() => { 
+        console.log('d');
+        resolve();
+    }, 0));
+    
+    console.log('e');
+}
+
+output();
