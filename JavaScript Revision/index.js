@@ -10,7 +10,7 @@ console.log(product(a, b));
 // Creating object for student
 
 const student = {
-  name: "Deep",
+  userName: "Deep",
   age: 21,
 
   greet() {
@@ -43,3 +43,8 @@ const arr3 = (...args) => {
 }
 
 console.log(arr3(1, 2, 3, 4, 5, 6, 7));
+
+// Destructuring
+var {userName} = student;
+userName = "Deep Shah";
+console.log(student.userName);
