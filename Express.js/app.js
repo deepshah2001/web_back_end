@@ -7,7 +7,9 @@ const path = require('path');
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const contactRouter = require('./routes/contactus');
-const pathDir = require('./util/path');             // Helper function for retrieving the main directory
+
+// Controllers
+const error = require('./controllers/error');
 
 // Setting portNumber to 4000 for localhost
 const portNumber = 4000;
@@ -15,6 +17,7 @@ const portNumber = 4000;
 // Initialization an express application.
 const app = express();
 
+// to parse the urlencoded data from the request body and extended: false for converting the parse data into key-value pair.
 app.use(bodyParser.urlencoded({extended: false}));
 
 // For allowing the static files to be used to show to users like css, js or images etc.
@@ -26,9 +29,7 @@ app.use("/shop", shopRouter);
 app.use("/", contactRouter);
 
 // For 404 status code
-app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(pathDir, 'views', '404.html'));
-})
+app.use(error.pageNotFound);
 
 // Creates server and set the port number which is described in the argument at desired location
 app.listen(portNumber, 'localhost', () => 
