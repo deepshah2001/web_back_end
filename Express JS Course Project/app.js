@@ -5,9 +5,6 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 
-// Database Connection
-const db = require('./util/database');
-
 const app = express();
 
 app.set('view engine', 'ejs');
