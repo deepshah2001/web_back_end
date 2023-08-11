@@ -23,7 +23,7 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
-
+  
 // Creates table for the model we defined
 sequelize.sync()
   .then((result) => {
