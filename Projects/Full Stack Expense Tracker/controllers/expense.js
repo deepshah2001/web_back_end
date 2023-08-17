@@ -1,34 +1,41 @@
-const Expense = require('../models/expense');
+const Expense = require("../models/expense");
 
-exports.getExpense = async(req, res, next) => {
-    const expenses = await Expense.findAll();
-    res.status(200).json({expenses: expenses});
-}
+exports.getExpense = async (req, res, next) => {
+  // Finding all the expenses of the user with the user id which has been logged in using the token verification
+  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
+  res.status(200).json({ expenses: expenses });
+  // req.user.getExpenses().then((expenses) => {});
+};
 
 exports.addExpense = async (req, res, next) => {
-    const {amount, description, category} = req.body;
+  const { amount, description, category } = req.body;
+  // Adding expense of a user with their unique user id in expense table
+  const expense = await Expense.create({
+    userId: req.user.id,
+    amount: amount,
+    description: description,
+    category: category,
+  });
 
-    const expense = await Expense.create({
-        amount: amount,
-        description: description,
-        category: category
-    });
-
-    res.status(201).json({expense: expense});
+  res.status(201).json({ expense: expense });
 };
 
 exports.deleteExpense = async (req, res, next) => {
+  try {
     const expenseId = req.params.expenseId;
+    // Only allowing to delete the expense by the owner of the expense
+    const expense = await Expense.findOne({
+      where: { id: expenseId, userId: req.user.id },
+    });
+    if (!expense) {
+      return res.send(404).json({ message: "No such expense!" });
+    }
 
-    Expense.findByPk(expenseId)
-        .then(expense => {
-            return expense.destroy();
-        })
-        .then(() => console.log("Deleted!"))
-        .catch(err => {
-            console.log(err);
-        });
-    
-    const expenses = await Expense.findAll();
-    res.status(200).json({expenses: expenses});
+    await expense.destroy();
+  } catch (err) {
+    console.log(err);
+  }
+  // Sending back the updated expenses list of a user
+  const expenses = await Expense.findAll();
+  res.status(200).json({ expenses: expenses });
 };

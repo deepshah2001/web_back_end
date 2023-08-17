@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Jost', sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 body {
@@ -33,6 +33,34 @@ body {
 .ledger h2 {
   text-transform: uppercase;
   color: #feca57;
+}
+
+#expenses {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#expenses td,
+#expenses th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#expenses tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#expenses tr:hover {
+  background-color: #ddd;
+}
+
+#expenses th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
 }
 
 #form {
@@ -95,7 +123,8 @@ input[type="number"],
 .trans li {
   background-color: #fff;
   color: #333;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   padding: 10px;
   margin: 10px 0;
   position: relative;
@@ -112,11 +141,10 @@ input[type="number"],
   border-left: 5px solid #ee5253;
 }
 #delete {
-    background-color: #e74c3c;
+  background-color: #e74c3c;
   color: white;
   display: block;
-  width: 50%;
-  margin-top: 25px;
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   border: 0;

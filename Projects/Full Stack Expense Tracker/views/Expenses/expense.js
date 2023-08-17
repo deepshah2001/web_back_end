@@ -5,11 +5,17 @@ let list = document.getElementById("expenses");
 expense.addEventListener("click", addExpense);
 
 window.addEventListener("DOMContentLoaded", () => {
-  axios.get("http://localhost:3000/expenses").then((response) => {
-    response.data.expenses.forEach((expense) => {
-      showExpenses(expense);
+  // Taking out the token for that logged in particular user for further storing their details
+  const token = localStorage.getItem("token");
+  axios
+    .get("http://localhost:3000/expenses", {
+      headers: { Authorization: token }, // Passing the token in the header for verification through jwt
+    })
+    .then((response) => {
+      response.data.expenses.forEach((expense) => {
+        showExpenses(expense);
+      });
     });
-  });
 });
 
 function addExpense(e) {
@@ -28,8 +34,11 @@ function addExpense(e) {
       category: category,
     };
 
+    const token = localStorage.getItem("token");
     axios
-      .post("http://localhost:3000/add-expense", myExpense)
+      .post("http://localhost:3000/add-expense", myExpense, {
+        headers: { Authorization: token },
+      })
       .then((response) => {
         showExpenses(response.data.expense);
         console.log(response);
@@ -45,37 +54,52 @@ function addExpense(e) {
 
 function showExpenses(myExp) {
   const li = document.createElement("li");
+  const tr = document.createElement("tr");
 
-  const text =
-    "Spend " +
-    myExp.amount +
-    " on " +
-    myExp.description +
-    " - " +
-    myExp.category;
+  tr.className = "trans";
+  tr.id = "expenses_heading";
 
-  if (myExp.amount >= 0) li.className = "inc";
-  else li.className = "exp";
-  li.appendChild(document.createTextNode(text));
+  const c1 = document.createElement("td");
+  const c2 = document.createElement("td");
+  const c3 = document.createElement("td");
+  const c4 = document.createElement("td");
+  const c5 = document.createElement("td");
+
+  c1.innerText = myExp.id;
+  c2.innerText = myExp.amount;
+  c3.innerText = myExp.description;
+  c4.innerText = myExp.category;
+
+  tr.appendChild(c1);
+  tr.appendChild(c2);
+  tr.appendChild(c3);
+  tr.appendChild(c4);
 
   const deleteBtn = document.createElement("button");
   deleteBtn.id = "delete";
 
   deleteBtn.appendChild(document.createTextNode("Delete"));
 
-  deleteBtn.addEventListener("click", () => {
+  deleteBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    console.log(token);
     axios
-      .post("http://localhost:3000/delete-expense/" + myExp.id)
+      .delete("http://localhost:3000/delete-expense/" + myExp.id, {
+        headers: { Authorization: token },
+      })
       .then(() => {
-        list.removeChild(li);
+        list.removeChild(tr);
       })
       .catch((err) => {
         document.body.innerHTML += "Something Went Wrong!";
-        console.log(err);
+        // console.log(err);
       });
   });
 
-  li.appendChild(deleteBtn);
+  c5.appendChild(deleteBtn);
+  tr.appendChild(c5);
 
-  list.appendChild(li);
+  list.appendChild(tr);
 }

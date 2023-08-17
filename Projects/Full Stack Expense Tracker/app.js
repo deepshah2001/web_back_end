@@ -5,6 +5,9 @@ const cors = require("cors");
 
 const sequelize = require("./util/database");
 
+const User = require("./models/signup");
+const Expenses = require("./models/expense");
+
 const signUpRoutes = require("./routes/signup");
 const expenseRoutes = require("./routes/expense");
 
@@ -22,6 +25,10 @@ app.use(expenseRoutes);
 app.use("/", (req, res, next) => {
   res.send("Hello");
 });
+
+// For connecting both tables User to Expenses (One to Many)
+User.hasMany(Expenses);
+Expenses.belongsTo(User);
 
 // For converting our model into table using sequelize and start a server at port 3000
 sequelize

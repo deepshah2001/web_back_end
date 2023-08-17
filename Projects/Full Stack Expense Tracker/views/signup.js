@@ -62,6 +62,8 @@ function existingUser(e) {
       .then((response) => {
         document.getElementById("status2").innerHTML = "";
         alert("User Succesfully Logged in!");
+        // Setting the token in local storage for further reference in the application
+        localStorage.setItem("token", response.data.token);
         window.location.href = response.data.path;
         console.log(response);
       })
@@ -78,6 +80,6 @@ function existingUser(e) {
         }
       });
 
-      form2.reset();
+    form2.reset();
   }
 }

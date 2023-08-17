@@ -1,4 +1,5 @@
 const express = require("express");
+
 const users = require("../controllers/signup");
 
 const router = express.Router();

@@ -1,7 +1,15 @@
+// Imported or required all necessary npm packages (jwt used for token verification and genration, bcrypt for encrytion of password (one-way))
 const bcrypt = require("bcrypt");
-const path = require('path');
+const path = require("path");
+const jwt = require("jsonwebtoken");
 
-const expensePage = path.join(__dirname, "..", "views", "Expenses", "expense.html");
+const expensePage = path.join(
+  __dirname,
+  "..",
+  "views",
+  "Expenses",
+  "expense.html"
+);
 
 console.log(expensePage);
 
@@ -39,6 +47,11 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
+// Generating Token using jwt (jsonwebtoken)
+function generateWebToken(id, name) {
+  return jwt.sign({ userId: id, name: name }, "secretKey");
+}
+
 // For handling all login scenarios for a user
 exports.existingUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -50,8 +63,15 @@ exports.existingUser = async (req, res, next) => {
       if (err) {
         res.status(500).json({ message: "Something went Wrong!" });
       }
-      if(response) {
-        res.status(201).json({ path:expensePage, message: "Logged in successfully!" });
+      if (response) {
+        // Only called the function for generating token when the user is successfully signed in or logged in otherwise no use
+        res
+          .status(201)
+          .json({
+            path: expensePage,
+            message: "Logged in successfully!",
+            token: generateWebToken(emailExists.id, emailExists.name),
+          });
       } else {
         res.status(401).json({ error: "Password Incorrect!" });
       }
