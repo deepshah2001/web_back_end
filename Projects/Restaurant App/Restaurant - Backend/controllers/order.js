@@ -1,3 +1,5 @@
+const Order = require('../models/orders');
+
 // For retrieving all orders from the database or table
 exports.getOrder = async (req, res, next) => {
   const orders = await Order.findAll();
