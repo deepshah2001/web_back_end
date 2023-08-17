@@ -89,8 +89,14 @@ button:hover{
 	transform: scale(.6);
 }
 
-#status {
+#status1 {
 	text-align: center;
 	color: white;
+	margin: 0 0 2rem 0;
+}
+
+#status2 {
+	text-align: center;
+	color: #6d44b8;
 	margin: 0 0 2rem 0;
 }

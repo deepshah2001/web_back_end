@@ -7,6 +7,7 @@ const signUpRoutes = require("./routes/signup");
 
 const app = express();
 
+// For allowing cross connection between frontend and backend of our application
 app.use(cors());
 app.use(bodyParser.json({ extended: false }));
 

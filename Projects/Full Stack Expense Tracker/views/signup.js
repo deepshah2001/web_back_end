@@ -1,8 +1,16 @@
+// Elements used for signup
 let signUp = document.getElementById("signup");
-let form = document.getElementById("form");
+let form1 = document.getElementById("form1");
 
 signUp.addEventListener("click", addUser);
 
+// Elements used for login
+let form2 = document.getElementById("form2");
+let login = document.getElementById("login");
+
+login.addEventListener("click", existingUser);
+
+// Sign Up for a new user
 function addUser(e) {
   e.preventDefault();
 
@@ -22,14 +30,53 @@ function addUser(e) {
     axios
       .post("http://localhost:3000/signup/user", myUser)
       .then((response) => {
-        document.getElementById('status').innerHTML = "";
+        document.getElementById("status1").innerHTML = "";
         console.log(response);
       })
       .catch((err) => {
-        document.getElementById('status').innerHTML = "User Already Exists!";
+        document.getElementById("status1").innerHTML = "User Already Exists!";
         console.log(err);
       });
 
-    form.reset();
+    form1.reset();
+  }
+}
+
+// Login for a user
+function existingUser(e) {
+  e.preventDefault();
+
+  let email = document.getElementById("login_email").value;
+  let password = document.getElementById("login_password").value;
+
+  if (email === "" || password === "") {
+    alert("Please fill out all the required fields in the form!");
+  } else {
+    let existingUser = {
+      email: email,
+      password: password,
+    };
+
+    axios
+      .post("http://localhost:3000/login/user", existingUser)
+      .then(() => {
+        document.getElementById("status2").innerHTML = "";
+        alert("User Succesfully Logged in!");
+        console.log(response);
+      })
+      .catch((err) => {
+        if (err.response.status === 402) {
+          document.getElementById("status2").innerHTML =
+            "User Does not Exist! Please signup to continue";
+          console.log(err);
+        } else if (err.response.status === 404) {
+          document.getElementById("status2").innerHTML = "Wrong Password!";
+          console.log(err);
+        } else {
+          console.log(err);
+        }
+      });
+
+      form2.reset();
   }
 }

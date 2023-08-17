@@ -14,7 +14,7 @@
     <div class="main">
       <input type="checkbox" id="chk" aria-hidden="true" />
       <div class="signup">
-        <form action="/signup/user" method="post" id="form">
+        <form id="form1">
           <label for="chk" aria-hidden="true">Sign up</label>
           <input
             type="text"
@@ -37,21 +37,23 @@
             id="password"
             required
           />
-          <button type="signup" id="signup">Sign Up</button>
-          <h2 id="status"></h2>
+          <button type="submit" id="signup">Sign Up</button>
+          <h2 id="status1"></h2>
         </form>
       </div>
       <div class="login">
-        <form>
+        <form id="form2">
           <label for="chk" aria-hidden="true">Login</label>
-          <input type="email" name="email" placeholder="Email" required />
+          <input type="email" name="email" placeholder="Email" id="login_email" required />
           <input
             type="password"
             name="pswd"
             placeholder="Password"
+            id="login_password"
             required
           />
-          <button>Login</button>
+          <button type="submit" id="login">Login</button>
+          <h2 id="status2"></h2>
         </form>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

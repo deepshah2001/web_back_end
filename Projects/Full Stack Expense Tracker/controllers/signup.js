@@ -1,5 +1,6 @@
 const Users = require("../models/signup.js");
 
+// For handling all signup scenarios for a user
 exports.addUser = async (req, res, next) => {
   const userName = req.body.userName;
   const email = req.body.email;
@@ -16,5 +17,23 @@ exports.addUser = async (req, res, next) => {
     });
 
     res.status(201).json({ newUser: user });
+  }
+};
+
+// For handling all login scenarios for a user
+exports.existingUser = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const emailExists = await Users.findOne({ where: { email: email } });
+
+  if (emailExists) {
+    if (password === emailExists.password) {
+      res.status(201).json({ message: "Logged in successfully!" });
+    } else {
+      res.status(404).json({ error: "Password Incorrect!" });
+    }
+  } else {
+    res.status(402).json({ error: "User Not Found!" });
   }
 };
