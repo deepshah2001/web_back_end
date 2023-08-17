@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const sequelize = require("./util/database");
+
 const signUpRoutes = require("./routes/signup");
+const expenseRoutes = require("./routes/expense");
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(bodyParser.json({ extended: false }));
 
 // For different routes
 app.use(signUpRoutes);
+app.use(expenseRoutes);
 
 app.use("/", (req, res, next) => {
   res.send("Hello");
@@ -22,6 +25,7 @@ app.use("/", (req, res, next) => {
 
 // For converting our model into table using sequelize and start a server at port 3000
 sequelize
+  // .sync({force: true})
   .sync()
   .then(() => {
     app.listen(3000);

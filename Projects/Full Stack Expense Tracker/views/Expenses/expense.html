@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Expenses</title>
+    <link rel="stylesheet" href="expense.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="ledger">
+        <h2>Expense Tracker</h2>
+
+        <form id="expense">
+          <label for="amount">Expense Amount</label>
+          <input type="number" id="amount" />
+          <label for="description">Expense Description</label>
+          <input type="text" id="description" />
+          <label for="category">Category</label>
+          <select name="category" id="category">
+            <option value="food">Food</option>
+            <option value="salary">Salary</option>
+            <option value="fuel">Fuel</option>
+            <option value="movie">Movie</option>
+          </select>
+          <button type="submit" id="submit">Submit</button>
+        </form>
+      </div>
+      <div class="transaction">
+        <ul class="trans" id="expenses"></ul>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="expense.js"></script>
+      </div>
+    </div>
+  </body>
+</html>

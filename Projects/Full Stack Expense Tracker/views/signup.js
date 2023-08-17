@@ -59,9 +59,10 @@ function existingUser(e) {
 
     axios
       .post("http://localhost:3000/login/user", existingUser)
-      .then(() => {
+      .then((response) => {
         document.getElementById("status2").innerHTML = "";
         alert("User Succesfully Logged in!");
+        window.location.href = response.data.path;
         console.log(response);
       })
       .catch((err) => {

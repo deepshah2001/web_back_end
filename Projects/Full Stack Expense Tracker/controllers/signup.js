@@ -1,4 +1,9 @@
 const bcrypt = require("bcrypt");
+const path = require('path');
+
+const expensePage = path.join(__dirname, "..", "views", "Expenses", "expense.html");
+
+console.log(expensePage);
 
 const Users = require("../models/signup.js");
 
@@ -46,7 +51,7 @@ exports.existingUser = async (req, res, next) => {
         res.status(500).json({ message: "Something went Wrong!" });
       }
       if(response) {
-        res.status(201).json({ message: "Logged in successfully!" });
+        res.status(201).json({ path:expensePage, message: "Logged in successfully!" });
       } else {
         res.status(401).json({ error: "Password Incorrect!" });
       }
