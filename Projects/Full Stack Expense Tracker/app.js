@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json({ extended: false }));
 
-app.post(signUpRoutes);
+app.use(signUpRoutes);
 
 app.use("/", (req, res, next) => {
   res.send("Hello");

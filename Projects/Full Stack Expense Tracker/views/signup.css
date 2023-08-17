@@ -88,3 +88,9 @@ button:hover{
 #chk:checked ~ .signup label{
 	transform: scale(.6);
 }
+
+#status {
+	text-align: center;
+	color: white;
+	margin: 0 0 2rem 0;
+}

@@ -22,10 +22,11 @@ function addUser(e) {
     axios
       .post("http://localhost:3000/signup/user", myUser)
       .then((response) => {
+        document.getElementById('status').innerHTML = "";
         console.log(response);
       })
       .catch((err) => {
-        document.body.innerHTML += "<h6>Something Went Wrong!</h6>";
+        document.getElementById('status').innerHTML = "User Already Exists!";
         console.log(err);
       });
 
