@@ -1,4 +1,4 @@
-const Users = require("./models/signup.js");
+const Users = require("../models/signup.js");
 
 exports.addUser = async (req, res, next) => {
   const userName = req.body.userName;
