@@ -31,9 +31,9 @@ exports.existingUser = async (req, res, next) => {
     if (password === emailExists.password) {
       res.status(201).json({ message: "Logged in successfully!" });
     } else {
-      res.status(404).json({ error: "Password Incorrect!" });
+      res.status(401).json({ error: "Password Incorrect!" });
     }
   } else {
-    res.status(402).json({ error: "User Not Found!" });
+    res.status(404).json({ error: "User Not Found!" });
   }
 };
