@@ -65,11 +65,11 @@ function existingUser(e) {
         console.log(response);
       })
       .catch((err) => {
-        if (err.response.status === 402) {
+        if (err.response.status === 404) {
           document.getElementById("status2").innerHTML =
             "User Does not Exist! Please signup to continue";
           console.log(err);
-        } else if (err.response.status === 404) {
+        } else if (err.response.status === 401) {
           document.getElementById("status2").innerHTML = "Wrong Password!";
           console.log(err);
         } else {
