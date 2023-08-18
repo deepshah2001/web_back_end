@@ -28,17 +28,20 @@
       </div>
       <div class="transaction">
         <table class="trans" id="expenses">
-            <tr class="trans" id="expenses_heading">
-                <th>S. No.</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Options</th>
-            </tr>
+          <tr class="trans" id="expenses_heading">
+            <th>S. No.</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Options</th>
+          </tr>
         </table>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="expense.js"></script>
       </div>
     </div>
+    <button type="submit" id="premium">Buy Premium Membership</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="expense.js"></script>
+    <script src="premium.js"></script>
   </body>
 </html>
