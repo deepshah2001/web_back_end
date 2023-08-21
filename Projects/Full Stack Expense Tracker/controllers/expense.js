@@ -1,4 +1,5 @@
 const Expense = require("../models/expense");
+const User = require('../models/signup');
 
 exports.getExpense = async (req, res, next) => {
   // Finding all the expenses of the user with the user id which has been logged in using the token verification
@@ -17,6 +18,10 @@ exports.addExpense = async (req, res, next) => {
     category: category,
   });
 
+  const user = await User.findOne({where: {id: req.user.id}});
+  
+  user.update({totalExpense: (user.totalExpense === null) ? Number(amount) : (user.totalExpense + Number(amount))});
+
   res.status(201).json({ expense: expense });
 };
 
@@ -30,6 +35,9 @@ exports.deleteExpense = async (req, res, next) => {
     if (!expense) {
       return res.send(404).json({ message: "No such expense!" });
     }
+
+    const user = await User.findOne({where: {id: req.user.id}});
+    user.update({totalExpense: (user.totalExpense - expense.amount)});
 
     await expense.destroy();
   } catch (err) {
