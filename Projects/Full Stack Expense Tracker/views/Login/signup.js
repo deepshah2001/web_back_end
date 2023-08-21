@@ -83,3 +83,12 @@ function existingUser(e) {
     form2.reset();
   }
 }
+
+// Elements used for forgot password
+const forgot = document.getElementById("forgot");
+
+forgot.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  window.location.href = "./forgot.html";
+});

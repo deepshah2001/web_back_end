@@ -13,6 +13,7 @@ const signUpRoutes = require("./routes/signup");
 const expenseRoutes = require("./routes/expense");
 const paymentRoutes = require("./routes/payment");
 const premiumRoutes = require('./routes/premium');
+const forgotRoutes = require('./routes/forgot');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(signUpRoutes);
 app.use(expenseRoutes);
 app.use(paymentRoutes);
 app.use("/premium", premiumRoutes);
+app.use("/password", forgotRoutes);
 
 app.use("/", (req, res, next) => {
   res.send("Hello");
