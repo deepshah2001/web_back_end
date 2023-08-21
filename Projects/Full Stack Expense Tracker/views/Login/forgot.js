@@ -12,11 +12,15 @@ function sendMail(e) {
   } else {
     axios
       .post("http://localhost:3000/password/forgotpassword", {
-        email: email
+        email: email,
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data.message);
+        window.location.href = "./success.html";
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        window.location.href = "./failure.html";
+        console.log(err);
+      });
   }
 }
