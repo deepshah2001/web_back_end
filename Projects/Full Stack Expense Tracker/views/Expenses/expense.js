@@ -49,28 +49,25 @@ function addExpense(e) {
       });
 
     form.reset();
+    leader.setAttribute('hidden', 'hidden');
   }
 }
 
 function showExpenses(myExp) {
-  const li = document.createElement("li");
   const tr = document.createElement("tr");
 
   tr.className = "trans";
   tr.id = "expenses_heading";
 
-  const c1 = document.createElement("td");
   const c2 = document.createElement("td");
   const c3 = document.createElement("td");
   const c4 = document.createElement("td");
   const c5 = document.createElement("td");
 
-  c1.innerText = myExp.id;
   c2.innerText = myExp.amount;
   c3.innerText = myExp.description;
   c4.innerText = myExp.category;
 
-  tr.appendChild(c1);
   tr.appendChild(c2);
   tr.appendChild(c3);
   tr.appendChild(c4);

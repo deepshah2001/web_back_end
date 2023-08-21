@@ -12,6 +12,7 @@ const Order = require('./models/order');
 const signUpRoutes = require("./routes/signup");
 const expenseRoutes = require("./routes/expense");
 const paymentRoutes = require("./routes/payment");
+const premiumRoutes = require('./routes/premium');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(bodyParser.json({ extended: false }));
 app.use(signUpRoutes);
 app.use(expenseRoutes);
 app.use(paymentRoutes);
+app.use("/premium", premiumRoutes);
 
 app.use("/", (req, res, next) => {
   res.send("Hello");
@@ -33,6 +35,7 @@ app.use("/", (req, res, next) => {
 User.hasMany(Expenses);
 Expenses.belongsTo(User);
 
+// For connecting both tables User to Order (One to Many)
 User.hasMany(Order);
 Order.belongsTo(User);
 

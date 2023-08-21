@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
+// Created model for structure of table in database
 const Order = sequelize.define('orders', {
     id: {
         type: Sequelize.INTEGER,
