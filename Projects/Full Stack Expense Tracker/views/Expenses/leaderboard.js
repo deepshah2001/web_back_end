@@ -1,5 +1,5 @@
 let leader = document.getElementById("leader");
-let leaderbody = leader.querySelector('tbody');
+let leaderbody = leader.querySelector("tbody");
 
 show.addEventListener("click", async (e) => {
   e.preventDefault();
@@ -21,9 +21,9 @@ show.addEventListener("click", async (e) => {
 });
 
 function clearLeaderboard() {
-    while(leaderbody.firstChild) {
-        leaderbody.removeChild(leaderbody.firstChild);
-    };
+  while (leaderbody.firstChild) {
+    leaderbody.removeChild(leaderbody.firstChild);
+  }
 }
 
 function showLeaderBoard(rank) {
@@ -36,8 +36,13 @@ function showLeaderBoard(rank) {
   let c2 = document.createElement("td");
   let c3 = document.createElement("td");
 
-  c2.appendChild(document.createTextNode(rank.userName));
-  c3.appendChild(document.createTextNode(rank.total_amount));
+  c2.appendChild(document.createTextNode(rank.name));
+
+  if (rank.total_amount === null) {
+    c3.appendChild(document.createTextNode(0));
+  } else {
+    c3.appendChild(document.createTextNode(rank.total_amount));
+  }
 
   tr.appendChild(c2);
   tr.appendChild(c3);

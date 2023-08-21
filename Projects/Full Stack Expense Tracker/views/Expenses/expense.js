@@ -49,7 +49,7 @@ function addExpense(e) {
       });
 
     form.reset();
-    leader.setAttribute('hidden', 'hidden');
+    leader.setAttribute("hidden", "hidden");
   }
 }
 
@@ -93,6 +93,7 @@ function showExpenses(myExp) {
         document.body.innerHTML += "Something Went Wrong!";
         // console.log(err);
       });
+    leader.setAttribute("hidden", "hidden");
   });
 
   c5.appendChild(deleteBtn);
