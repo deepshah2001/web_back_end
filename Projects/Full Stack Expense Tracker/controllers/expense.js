@@ -1,5 +1,7 @@
 const Expense = require("../models/expense");
-const User = require('../models/signup');
+const User = require("../models/signup");
+
+const sequelize = require("../util/database");
 
 exports.getExpense = async (req, res, next) => {
   // Finding all the expenses of the user with the user id which has been logged in using the token verification
@@ -8,21 +10,37 @@ exports.getExpense = async (req, res, next) => {
   // req.user.getExpenses().then((expenses) => {});
 };
 
+
 exports.addExpense = async (req, res, next) => {
-  const { amount, description, category } = req.body;
-  // Adding expense of a user with their unique user id in expense table
-  const expense = await Expense.create({
-    userId: req.user.id,
-    amount: amount,
-    description: description,
-    category: category,
-  });
+  const t = await sequelize.transaction();
+  try {
+    const { amount, description, category } = req.body;
+    // Adding expense of a user with their unique user id in expense table
+    const expense = await Expense.create(
+      {
+        userId: req.user.id,
+        amount: amount,
+        description: description,
+        category: category,
+      },
+      { transaction: t }
+    );
 
-  const user = await User.findOne({where: {id: req.user.id}});
-  
-  user.update({totalExpense: (user.totalExpense === null) ? Number(amount) : (user.totalExpense + Number(amount))});
-
-  res.status(201).json({ expense: expense });
+    await User.update(
+      {
+        totalExpense: sequelize.literal(
+          `COALESCE(totalExpense, 0) + ${Number(amount)}`
+        ),
+      },
+      { transaction: t, where: { id: req.user.id } }
+    );
+    await t.commit();
+    res.status(201).json({ expense: expense });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    res.status(500).json({ error: err });
+  }
 };
 
 exports.deleteExpense = async (req, res, next) => {
@@ -36,8 +54,8 @@ exports.deleteExpense = async (req, res, next) => {
       return res.send(404).json({ message: "No such expense!" });
     }
 
-    const user = await User.findOne({where: {id: req.user.id}});
-    user.update({totalExpense: (user.totalExpense - expense.amount)});
+    const user = await User.findOne({ where: { id: req.user.id } });
+    user.update({ totalExpense: user.totalExpense - expense.amount });
 
     await expense.destroy();
   } catch (err) {
