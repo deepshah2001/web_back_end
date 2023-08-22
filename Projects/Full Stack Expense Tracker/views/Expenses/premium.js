@@ -4,7 +4,7 @@ let show = document.getElementById("show");
 let report = document.getElementById('report');
 let token;
 
-window.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   token = localStorage.getItem("token");
   const response = await axios.get("http://localhost:3000/is-premium", {
     headers: { Authorization: token },
@@ -63,4 +63,12 @@ async function updateTransaction(orderId, paymentId, status) {
     show.removeAttribute("hidden");
     report.removeAttribute("hidden");
   }
+}
+
+report.addEventListener("click", showTable);
+
+function showTable(e) {
+  e.preventDefault();
+
+  window.location.href = "./report.html";
 }

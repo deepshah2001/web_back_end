@@ -1,89 +1,108 @@
+/* Basic Styling Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
 }
 
 body {
-  height: 100vh;
-  width: 100%;
-  place-items: center;
-  display: grid;
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+  color: #333;
+  height: 100vh; /* This will ensure the body covers the entire viewport height */
+  display: flex; /* Setting up flexbox */
+  flex-direction: column; /* Stacking children vertically */
+  justify-content: center; /* Centering children vertically */
+  align-items: center; /* Centering children horizontally */
 }
+
+#container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 95%; /* Making sure it doesn't span the entire screen width */
+  margin-bottom: 20px; /* Space between container and button */
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
 
 #report-generator {
-  width: 80%;
-  margin: 0 auto;
+  flex: 2; /* report-generator takes up twice the space of list-file */
   padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e0e0e0; /* Border between report and list */
 }
 
-#main-heading {
+#list-file {
+  flex: 1;
+  padding: 20px;
+}
+
+h1, h2, h4 {
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  color: #444;
-  margin-top: 0;
-  margin-bottom: 40px;
-  padding: 10px;
-  border-bottom: 3px solid #007bff;
 }
 
 .heading {
-  text-align: center;
-  border-bottom: 2px solid #ccc;
+  color: #555;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
   padding-bottom: 10px;
-  margin-bottom: 20px;
-  color: #333;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 40px;
+  margin-bottom: 20px; /* Space between tables */
 }
 
-table th,
-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
+table, th, td {
+  border: 1px solid #e0e0e0;
 }
 
-table thead th {
-  background-color: #f2f2f2;
-  color: #333;
+th, td {
+  padding: 8px 15px;
+  text-align: left;
 }
 
-table tfoot {
-  font-weight: bold;
+tfoot {
+  background-color: #f4f4f4;
 }
 
-table tbody tr:nth-child(even) {
-    background-color: #f8f8f8; /* This gives alternate rows a slightly different shade */
-}
-
-table tbody td {
-    color: #666; /* A softer color for the main content */
-    padding: 10px;
-    vertical-align: top;
+#button {
+  display: flex;
+  justify-content: center;
 }
 
 #download {
-  background-color: #007bff;
-  color: #fff;
   padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  margin-left: 45%;
+  transition: background 0.3s;
 }
 
 #download:hover {
   background-color: #0056b3;
+}
+
+ul#list-item {
+  list-style: none;
+}
+
+ul#list-item li a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+ul#list-item li a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }

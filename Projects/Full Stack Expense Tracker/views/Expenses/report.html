@@ -7,51 +7,60 @@
     <link rel="stylesheet" href="report.css" />
   </head>
   <body>
-    <div id="report-generator">
-      <h1 id="main-heading">DETAILED REPORT</h1>
-      <div id="daily">
-        <h4 class="heading">Date Here</h4>
-        <table>
-          <thead>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Income</th>
-            <th>Expense</th>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot></tfoot>
-        </table>
+    <div id="container">
+      <div id="report-generator">
+        <h1 id="main-heading">DETAILED REPORT</h1>
+        <div id="daily">
+          <h4 class="heading">Date Here</h4>
+          <table>
+            <thead>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Income</th>
+              <th>Expense</th>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+        <div id="monthly">
+          <h4 class="heading">Month Here</h4>
+          <table>
+            <thead>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Income</th>
+              <th>Expense</th>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+        <div id="yearly">
+          <h4 class="heading">Year Here</h4>
+          <table>
+            <thead>
+              <th>Month</th>
+              <th>Income</th>
+              <th>Expense</th>
+              <th>Savings</th>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
       </div>
-      <div id="monthly">
-        <h4 class="heading">Month Here</h4>
-        <table>
-          <thead>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Income</th>
-            <th>Expense</th>
-          </thead>
-          <tbody></tbody>
-          <tfoot></tfoot>
-        </table>
+      <div id="list-file">
+        <h2 id="h2">List of Previously Downloaded Files</h2>
+        <ul id="list-item"></ul>
       </div>
-      <div id="yearly">
-        <h4 class="heading">Year Here</h4>
-        <table>
-          <thead>
-            <th>Month</th>
-            <th>Income</th>
-            <th>Expense</th>
-            <th>Savings</th>
-          </thead>
-          <tbody></tbody>
-          <tfoot></tfoot>
-        </table>
-      </div>
+    </div>
+    <div id="button">
       <button type="submit" id="download">Download Report</button>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="report.js"></script>
   </body>
 </html>
