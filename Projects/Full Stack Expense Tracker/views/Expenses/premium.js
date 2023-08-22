@@ -1,6 +1,7 @@
 let premium = document.getElementById("premium");
 let p = document.getElementById("status");
 let show = document.getElementById("show");
+let report = document.getElementById('report');
 let token;
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -13,6 +14,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     premium.style.display = "none";
     p.innerHTML = "You're a Premium Member!";
     show.removeAttribute("hidden");
+    report.removeAttribute("hidden");
   }
 });
 
@@ -59,5 +61,6 @@ async function updateTransaction(orderId, paymentId, status) {
     premium.style.display = "none";
     p.innerHTML = "You're now a Premium Member!";
     show.removeAttribute("hidden");
+    report.removeAttribute("hidden");
   }
 }

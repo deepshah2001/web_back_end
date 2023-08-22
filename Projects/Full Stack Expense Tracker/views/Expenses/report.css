@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  place-items: center;
+  display: grid;
+  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+}
+
+#report-generator {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#main-heading {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #444;
+  margin-top: 0;
+  margin-bottom: 40px;
+  padding: 10px;
+  border-bottom: 3px solid #007bff;
+}
+
+.heading {
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+table thead th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+table tfoot {
+  font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f8f8f8; /* This gives alternate rows a slightly different shade */
+}
+
+table tbody td {
+    color: #666; /* A softer color for the main content */
+    padding: 10px;
+    vertical-align: top;
+}
+
+#download {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 45%;
+}
+
+#download:hover {
+  background-color: #0056b3;
+}
