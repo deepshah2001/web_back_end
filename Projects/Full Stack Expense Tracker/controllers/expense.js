@@ -10,7 +10,6 @@ exports.getExpense = async (req, res, next) => {
   // req.user.getExpenses().then((expenses) => {});
 };
 
-
 exports.addExpense = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
@@ -26,6 +25,7 @@ exports.addExpense = async (req, res, next) => {
       { transaction: t }
     );
 
+    // Updating the total expense after a user adds a new expense
     await User.update(
       {
         totalExpense: sequelize.literal(
@@ -55,6 +55,7 @@ exports.deleteExpense = async (req, res, next) => {
     }
 
     const user = await User.findOne({ where: { id: req.user.id } });
+    // Updating the total expense after the user deletes an expense
     user.update({ totalExpense: user.totalExpense - expense.amount });
 
     await expense.destroy();

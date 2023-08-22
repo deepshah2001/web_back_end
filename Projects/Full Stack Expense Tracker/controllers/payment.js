@@ -2,6 +2,8 @@ const Razorpay = require("razorpay");
 
 const Order = require("../models/order");
 
+require("dotenv").config();
+
 // For checking if the particular user is premium or not
 const isPremium = async (req, res, next) => {
   return res.status(201).json({ premium: req.user.isPremium });
@@ -11,10 +13,8 @@ const isPremium = async (req, res, next) => {
 const purchasePremium = async (req, res, next) => {
   try {
     var rzp = new Razorpay({
-      // key_id: process.env.RAZORPAY_KEY_ID,
-      // key_secret: process.env.RAZORPAY_KEY_SECRET
-      key_id: "rzp_test_fDaQe8vbVk5GlS",
-      key_secret: "avNbDhFz2G2UrbA243IEYniN",
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
     const options = {

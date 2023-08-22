@@ -8,7 +8,9 @@ const getVerified = async (req, res, next) => {
     const token = req.header("Authorization");
 
     if (!token) {
-        return res.status(403).send({ auth: false, message: 'No token provided.' });
+      return res
+        .status(403)
+        .send({ auth: false, message: "No token provided." });
     }
     // Verifying if the token is same or not
     const user = jwt.verify(token, "secretKey");
@@ -29,5 +31,5 @@ const getVerified = async (req, res, next) => {
 };
 
 module.exports = {
-    getVerified
+  getVerified,
 };

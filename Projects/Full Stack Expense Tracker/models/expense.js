@@ -1,27 +1,27 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
-const sequelize = require('../util/database');
+const sequelize = require("../util/database");
 
 // Created model for structure of table in database
-const Expense = sequelize.define('expenses', {
-    id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    amount: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    description: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    category: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    }
+const Expense = sequelize.define("expenses", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  amount: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  category: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Expense;

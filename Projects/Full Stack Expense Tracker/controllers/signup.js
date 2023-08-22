@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
+const Users = require("../models/signup.js");
+
 const expensePage = path.join(
   __dirname,
   "..",
@@ -10,10 +12,6 @@ const expensePage = path.join(
   "Expenses",
   "expense.html"
 );
-
-console.log(expensePage);
-
-const Users = require("../models/signup.js");
 
 // For handling all signup scenarios for a user
 exports.addUser = async (req, res, next) => {
@@ -30,7 +28,7 @@ exports.addUser = async (req, res, next) => {
   } else {
     try {
       const saltRounds = 10;
-
+      // Encrypting the password to store it in database
       bcrypt.hash(password, saltRounds, async (err, hash) => {
         console.log(err);
         await Users.create({
@@ -65,13 +63,11 @@ exports.existingUser = async (req, res, next) => {
       }
       if (response) {
         // Only called the function for generating token when the user is successfully signed in or logged in otherwise no use
-        res
-          .status(201)
-          .json({
-            path: expensePage,
-            message: "Logged in successfully!",
-            token: generateWebToken(emailExists.id, emailExists.name),
-          });
+        res.status(201).json({
+          path: expensePage,
+          message: "Logged in successfully!",
+          token: generateWebToken(emailExists.id, emailExists.name),
+        });
       } else {
         res.status(401).json({ error: "Password Incorrect!" });
       }

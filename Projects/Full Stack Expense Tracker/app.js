@@ -8,6 +8,7 @@ const sequelize = require("./util/database");
 const User = require("./models/signup");
 const Expenses = require("./models/expense");
 const Order = require('./models/order');
+const ResetPassword = require('./models/forgotPasswordRequests');
 
 const signUpRoutes = require("./routes/signup");
 const expenseRoutes = require("./routes/expense");
@@ -30,7 +31,7 @@ app.use("/premium", premiumRoutes);
 app.use("/password", forgotRoutes);
 
 app.use("/", (req, res, next) => {
-  res.send("Hello");
+  res.send("Hello!");
 });
 
 // For connecting both tables User to Expenses (One to Many)
@@ -40,6 +41,10 @@ Expenses.belongsTo(User);
 // For connecting both tables User to Order (One to Many)
 User.hasMany(Order);
 Order.belongsTo(User);
+
+// For connecting both tables User to Order (One to Many)
+User.hasMany(ResetPassword);
+ResetPassword.belongsTo(User);
 
 // For converting our model into table using sequelize and start a server at port 3000
 sequelize
