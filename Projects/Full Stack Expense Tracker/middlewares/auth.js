@@ -6,6 +6,7 @@ const User = require("../models/signup");
 const getVerified = async (req, res, next) => {
   try {
     const token = req.header("Authorization");
+    const exp_page = req.header("exp_page");
 
     if (!token) {
       return res
@@ -19,6 +20,7 @@ const getVerified = async (req, res, next) => {
         console.log(JSON.stringify(user));
         // Storing the user from the token into req so that can be passed to whole application or middleware as req is globally defined
         req.user = user;
+        req.exp_page = exp_page;
         next();
       })
       .catch((err) => {
