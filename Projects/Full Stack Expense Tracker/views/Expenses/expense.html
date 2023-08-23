@@ -24,28 +24,36 @@
             <option value="movie">Movie</option>
           </select>
           <button type="submit" id="submit" class="add">Submit</button>
-          <button type="submit" id="show" class="add" hidden="hidden">Show Leaderboard</button>
-          <button type="submit" id="report" class="add" hidden="hidden">Generate Report</button>
+          <button type="submit" id="show" class="add" hidden="hidden">
+            Show Leaderboard
+          </button>
+          <button type="submit" id="report" class="add" hidden="hidden">
+            Generate Report
+          </button>
         </form>
       </div>
       <div class="transaction">
         <table class="trans" id="expenses">
-          <tr class="trans" id="expenses_heading">
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Options</th>
-          </tr>
+          <thead>
+            <tr class="trans" id="expenses_heading">
+              <th>Amount</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody class="trans" id="expenses"></tbody>
         </table>
+        <div id="pagination"></div>
         <table class="trans" id="leader" hidden="hidden">
           <thead>
-          <tr class="trans" id="leader_heading">
-            <!-- <th>Rank</th> -->
-            <th>Name</th>
-            <th>Total Amount</th>
-          </tr>
-        </thead>
-        <tbody class="trans" id="leader_body"></tbody>
+            <tr class="trans" id="leader_heading">
+              <!-- <th>Rank</th> -->
+              <th>Name</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+          <tbody class="trans" id="leader_body"></tbody>
         </table>
       </div>
     </div>

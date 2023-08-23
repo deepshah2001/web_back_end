@@ -3,10 +3,40 @@ const User = require("../models/signup");
 
 const sequelize = require("../util/database");
 
+const EXPENSES_PER_PAGE = 10;
+
 exports.getExpense = async (req, res, next) => {
+  const page = +req.query.page || 1;
+
+  console.log(page);
+
+  let totalExpense;
   // Finding all the expenses of the user with the user id which has been logged in using the token verification
-  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
-  res.status(200).json({ expenses: expenses });
+
+  Expense.count()
+    .then((total) => {
+      totalExpense = total;
+      return Expense.findAll({ 
+        offset: (page-1) * EXPENSES_PER_PAGE,
+        limit: EXPENSES_PER_PAGE,
+        where: { userId: req.user.id } 
+      });
+    })
+    .then(expenses => {
+      res.status(200).json({
+        expenses: expenses,
+        currentPage: page,
+        hasNextPage: EXPENSES_PER_PAGE * page < totalExpense,
+        nextPage: page + 1,
+        hasPreviousPage: page > 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalExpense / EXPENSES_PER_PAGE),
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({err: err})
+    });
   // req.user.getExpenses().then((expenses) => {});
 };
 
