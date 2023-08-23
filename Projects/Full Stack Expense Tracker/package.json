@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "run start": "node app.js"
+    "start": "node app.js",
+    "run start": "node app.js",
+    "start:dev": "nodemon app.js"
   },
   "author": "Deep Shah",
   "license": "ISC",
@@ -17,7 +18,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.1",
+    "morgan": "^1.10.0",
     "mysql2": "^3.6.0",
     "open": "^6.4.0",
     "razorpay": "^2.9.2",

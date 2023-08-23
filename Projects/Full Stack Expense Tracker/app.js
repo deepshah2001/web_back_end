@@ -2,6 +2,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const helmet = require('helmet');
+const morgan = require('morgan');
+const fs = require('fs');
+const path = require('path');
 
 const sequelize = require("./util/database");
 
@@ -17,8 +21,14 @@ const paymentRoutes = require("./routes/payment");
 const premiumRoutes = require('./routes/premium');
 const forgotRoutes = require('./routes/forgot');
 
+const streamAccessFile = fs.createWriteStream(path.join(__dirname, "access.log"), {
+  flags: 'a'
+})
+
 const app = express();
 
+app.use(helmet());
+app.use(morgan('combined', {stream: streamAccessFile}));
 // For allowing cross connection between frontend and backend of our application
 app.use(cors());
 // For parsing the data to frontend in json format
@@ -56,6 +66,6 @@ sequelize
   // .sync({force: true})
   .sync()
   .then(() => {
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => console.log(err));
