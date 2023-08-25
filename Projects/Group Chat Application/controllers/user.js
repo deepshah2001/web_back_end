@@ -90,3 +90,14 @@ exports.verifyUser = async (req, res, next) => {
     res.status(500).json({ status: false, message: "Error" });
   }
 };
+
+// Getting list of all users in the chat room
+exports.allUsers = async (req, res, next) => {
+  try {
+    const users = await User.findAll();
+    res.status(201).json({ status: true, users, message: "User List!" });
+  } catch(err) {
+    console.log(err);
+    res.status(500).json({ status: false, message: "No User Found!" });
+  }
+}

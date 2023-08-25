@@ -120,11 +120,65 @@
         </div>
       </div>
       <div class="chat-input">
-        <input type="text" placeholder="Write a message!" />
-        <button>Send</button>
+        <input type="text" id="message" placeholder="Write a message!" />
+        <button id="send">Send</button>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script></script>
+    <script>
+      const address = "http://localhost:3000";
+
+      const usersList = document.getElementById("users");
+      const send = document.getElementById("send");
+
+      send.addEventListener('click', newMessage);
+
+      // Load all the users in the chat room
+      window.addEventListener('DOMContentLoaded', () => {
+        axios
+          .get(`${address}/user/all-users`)
+          .then(response => {
+            console.log(response);
+            response.data.users.forEach(user => {
+              showUsers(user);
+            })
+          })
+          .catch(err => console.log(err));
+      })
+
+      // To show all the available users in the chat room
+      function showUsers(user) {
+        const p = document.createElement('p');
+
+        p.appendChild(document.createTextNode(user.name));
+
+        usersList.appendChild(p);
+      }
+
+      // To add new message by the user
+      function newMessage(e) {
+        e.preventDefault();
+
+        const message = document.getElementById("message").value;
+        const token = localStorage.getItem('token');
+
+        if(!message) {
+          alert("Please Write a message before sending!");
+        } else {
+          axios
+            .post(`${address}/message/add-message`, {
+              message: message,
+            }, {
+              headers: {Authorization: token}
+            })
+            .then(response => {
+              console.log(response);
+            })
+            .catch(err => {
+              console.log(err);
+            })
+        }
+      }
+    </script>
   </body>
 </html>
