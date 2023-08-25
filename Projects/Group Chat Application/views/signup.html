@@ -148,16 +148,17 @@
           .then((response) => {
             console.log(response);
             status.innerText = "Successfully Created Account!";
+            window.location.href = "./login.html";
           })
           .catch((err) => {
-            if(err.response.status === 403)
+            if (err.response.status === 403)
               status.innerText = "User Already Exists!";
-            else if(err.response.status === 402 || err.response.status === 500)
+            else if (err.response.status === 402 || err.response.status === 500)
               status.innerText = "Internal Server Error!";
-            console.log(err)
+            console.log(err);
           });
 
-          form.reset();
+        form.reset();
       }
     }
   </script>
