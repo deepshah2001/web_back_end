@@ -35,6 +35,16 @@
         justify-content: center;
       }
 
+      #status {
+        text-align: center;
+        margin-top: 15px;
+        color: #696ed6;
+        font-size: 20px;
+        font-weight: 700;
+        align-items: center;
+        justify-content: center;
+      }
+
       input[type="text"],
       input[type="number"],
       input[type="password"],
@@ -98,31 +108,51 @@
       <input type="password" id="password" placeholder="Password" />
       <button id="submit">Register</button>
       <a href="./login.html">Already a Member?</a>
+      <h1 id="status"></h1>
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     const address = "http://localhost:3000";
 
-    const register = document.getElementById('submit');
-    const name = document.getElementById('name');
-    const email = document.getElementById('email');
-    const phone = document.getElementById('phone');
-    const password = document.getElementById('password');
+    const register = document.getElementById("submit");
+    const status = document.getElementById("status");
 
-    register.addEventListener('click', addUser);
+    register.addEventListener("click", addUser);
 
     function addUser(e) {
       e.preventDefault();
 
-      axios
-        .post(`${address}/user/add-user`, {
-          name, email, phone, password
-        })
-        .then(response => {
-          console.log(reponse);
-        })
-        .catch(err => console.log(err));
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const password = document.getElementById("password").value;
+
+      if (!name || !email || !phone || !password) {
+        status.innerText = "Please Fill out all the fields in the form";
+      } else {
+        let myUser = {
+          name: name,
+          email: email,
+          phone: phone,
+          password: password,
+        };
+
+        console.log(myUser);
+
+        axios
+          .post(`${address}/user/add-user`, myUser)
+          .then((response) => {
+            console.log(response);
+            status.innerText = "Successfully Created Account!";
+          })
+          .catch((err) => {
+            status.innerText = "User Already Exists!";
+            console.log(err)
+          });
+
+          form.reset();
+      }
     }
   </script>
 </html>
