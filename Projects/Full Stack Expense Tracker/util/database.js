@@ -1,9 +1,11 @@
 // Using sequelize for handling SQL Queries without writing it
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("expense-tracker", "root", "root", {
+require("dotenv").config();
+
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_ID, process.env.DATABASE_PASSWORD, {
   dialect: "mysql",
-  host: "localhost",
+  host: process.env.DATABASE_HOST,
 });
 
 module.exports = sequelize;

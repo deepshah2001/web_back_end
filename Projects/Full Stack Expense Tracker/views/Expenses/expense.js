@@ -45,7 +45,8 @@ function addExpense(e) {
         headers: { Authorization: token },
       })
       .then((response) => {
-        showExpenses(response.data.expense);
+        // showExpenses(response.data.expense);
+        location.reload();
         console.log(response);
       })
       .catch((err) => {
@@ -114,6 +115,7 @@ function showPagination({
   hasPreviousPage,
   previousPage,
   lastPage,
+  expenses
 }) {
   pagination.innerHTML = "";
 
@@ -139,11 +141,13 @@ function showPagination({
     btn2.className = "pagination-btn";
   }
 
-  const btn1 = document.createElement("button");
-  btn1.innerHTML = `<h3>${currentPage}</h3>`;
-  btn1.addEventListener("click", () => getProducts(currentPage));
-  pagination.appendChild(btn1);
-  btn1.className = "pagination-btn";
+  if(expenses.length != 0) {
+    const btn1 = document.createElement("button");
+    btn1.innerHTML = `<h3>${currentPage}</h3>`;
+    btn1.addEventListener("click", () => getProducts(currentPage));
+    pagination.appendChild(btn1);
+    btn1.className = "pagination-btn";
+  }
 
   if (hasNextPage) {
     const btn3 = document.createElement("button");
@@ -160,7 +164,7 @@ function showPagination({
     btn5.className = "pagination-btn";
   }
 
-  if (nextPage != lastPage && currentPage != lastPage) {
+  if (nextPage != lastPage && currentPage != lastPage && lastPage != 0) {
     const btn4 = document.createElement("button");
     btn4.innerHTML = lastPage;
     btn4.addEventListener("click", () => getProducts(lastPage));

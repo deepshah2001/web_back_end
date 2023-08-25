@@ -14,7 +14,7 @@ const getVerified = async (req, res, next) => {
         .send({ auth: false, message: "No token provided." });
     }
     // Verifying if the token is same or not
-    const user = jwt.verify(token, "secretKey");
+    const user = jwt.verify(token, process.env.TOKEN_ID);
     User.findByPk(user.userId)
       .then((user) => {
         console.log(JSON.stringify(user));

@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
+require("dotenv").config();
+
 const Users = require("../models/signup.js");
 const FilesDownloaded = require("../models/filesDownloaded.js");
 
@@ -51,7 +53,7 @@ exports.addUser = async (req, res, next) => {
 
 // Generating Token using jwt (jsonwebtoken)
 function generateWebToken(id, name) {
-  return jwt.sign({ userId: id, name: name }, "secretKey");
+  return jwt.sign({ userId: id, name: name }, process.env.TOKEN_ID);
 }
 
 // For handling all login scenarios for a user

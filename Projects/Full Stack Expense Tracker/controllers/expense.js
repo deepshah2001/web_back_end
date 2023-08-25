@@ -13,7 +13,7 @@ exports.getExpense = async (req, res, next) => {
   let totalExpense;
   // Finding all the expenses of the user with the user id which has been logged in using the token verification
 
-  Expense.count()
+  Expense.count({where: {userId: req.user.id}})
     .then((total) => {
       totalExpense = total;
       return Expense.findAll({ 
