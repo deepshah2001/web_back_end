@@ -102,11 +102,13 @@
   <body>
     <div id="signup">
       <h2 id="heading">Sign Up</h2>
-      <input type="text" id="name" placeholder="Name" />
-      <input type="email" id="email" placeholder="Email" />
-      <input type="number" id="phone" placeholder="Phone Number" />
-      <input type="password" id="password" placeholder="Password" />
-      <button id="submit">Register</button>
+      <form>
+        <input type="text" id="name" placeholder="Name" />
+        <input type="email" id="email" placeholder="Email" />
+        <input type="number" id="phone" placeholder="Phone Number" />
+        <input type="password" id="password" placeholder="Password" />
+        <button id="submit">Register</button>
+      </form>
       <a href="./login.html">Already a Member?</a>
       <h1 id="status"></h1>
     </div>
@@ -115,6 +117,7 @@
   <script>
     const address = "http://localhost:3000";
 
+    const form = document.querySelector("form");
     const register = document.getElementById("submit");
     const status = document.getElementById("status");
 
@@ -147,7 +150,10 @@
             status.innerText = "Successfully Created Account!";
           })
           .catch((err) => {
-            status.innerText = "User Already Exists!";
+            if(err.response.status === 403)
+              status.innerText = "User Already Exists!";
+            else if(err.response.status === 402 || err.response.status === 500)
+              status.innerText = "Internal Server Error!";
             console.log(err)
           });
 

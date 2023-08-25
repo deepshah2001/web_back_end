@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+
+require("dotenv").config();
 
 // For Sign-up for a user
 exports.addUser = async (req, res, next) => {
@@ -39,14 +42,18 @@ exports.addUser = async (req, res, next) => {
       console.log(err);
       res
         .status(500)
-        .json({ status: false, message: "Error in Hashing Password" });
+        .json({ status: false, message: "Error" });
     }
   }
 };
 
+function generateToken(id, email) {
+    return jwt.sign({ userId: id, email: email }, process.env.TOKEN_KEY);
+}
+
 // For logging in an existing user
 exports.verifyUser = async (req, res, next) => {
-  const { email, password } = req.user;
+  const { email, password } = req.body;
 
   if (email === "" || password === "") {
     return res.status(501).json({ status: false, message: "Empty Field!" });
@@ -61,21 +68,21 @@ exports.verifyUser = async (req, res, next) => {
                 res
                 .status(402)
                 .json({ status: false, message: "Wrong Password" });
-            } else {
+            } else if(response) {
                 res
                 .status(201)
-                .json({});
+                .json({ status: true, message: "Logged In Successfully", token: generateToken(userExists.id, userExists.email)});
             }
         })
     } else {
       return res
         .status(403)
-        .json({ status: false, message: "User Already Exists!" });
+        .json({ status: false, message: "User Don't Exists!" });
     }
   } catch (err) {
     console.log(err);
     res
       .status(500)
-      .json({ status: false, message: "Error in Hashing Password" });
+      .json({ status: false, message: "Error" });
   }
 };
