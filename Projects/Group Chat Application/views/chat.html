@@ -4,6 +4,127 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
+
+      #users {
+        flex: 1;
+        max-width: 150px;
+        border-right: 1px solid #ddd;
+        padding: 15px;
+        overflow-y: auto;
+      }
+
+      .user {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .user:hover {
+        background-color: #f0f0f0;
+      }
+
+      .chat-container {
+        flex: 3;
+        max-width: 600px;
+        margin: 40px auto;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 15px;
+        font-size: 18px;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+      }
+
+      .my-message,
+      .other-message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        max-width: 70%; /* Messages won't occupy full width */
+      }
+
+      .my-message {
+        align-self: flex-start; /* Align to the left */
+        background-color: #e6f7ff; /* Light blue to signify user's message */
+        border: 1px solid #c9e8ff;
+      }
+
+      .other-message {
+        align-self: flex-end; /* Align to the right */
+        background-color: #f1f1f1; /* Light gray for others' messages */
+        border: 1px solid #ddd;
+      }
+
+      .chat-input {
+        padding: 10px 15px;
+        display: flex;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .chat-input button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        border: none;
+        background-color: #333;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background-color: #555;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div id="users">
+      <!-- Users -->
+    </div>
+    <div class="chat-container">
+      <div class="chat-header">Chat Room</div>
+      <div class="chat-messages">
+        <div class="my-message">
+          <!-- My Messages -->
+        </div>
+        <div class="other-message">
+          <!-- Other Messages -->
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="Write a message!" />
+        <button>Send</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script></script>
+  </body>
 </html>
