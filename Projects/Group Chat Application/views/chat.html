@@ -111,8 +111,7 @@
     </div>
     <div class="chat-container">
       <div class="chat-header">Chat Room</div>
-      <div class="chat-messages">
-      </div>
+      <div class="chat-messages"></div>
       <div class="chat-input">
         <input type="text" id="message" placeholder="Write a message!" />
         <button id="send">Send</button>
@@ -121,50 +120,59 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const address = "http://localhost:3000";
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       const usersList = document.getElementById("users");
       const send = document.getElementById("send");
 
-      const chatMessages = document.getElementsByClassName('chat-messages')[0];
+      const chatMessages = document.getElementsByClassName("chat-messages")[0];
       // const myMessage = document.getElementsByClassName("my-message")[0];
       // const otherMessage = document.getElementsByClassName("other-message")[0];
 
-      send.addEventListener('click', newMessage);
+      send.addEventListener("click", newMessage);
 
       // Load all the users in the chat room
-      window.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener("DOMContentLoaded", () => {
         // Get all users
         axios
           .get(`${address}/user/all-users`)
-          .then(response => {
+          .then((response) => {
             console.log(response);
-            response.data.users.forEach(user => {
+            response.data.users.forEach((user) => {
               showUsers(user);
-            })
+            });
           })
-          .catch(err => console.log(err));
+          .catch((err) => console.log(err));
 
-          // Get all messages
+        // Get all messages and calls the API every 1 second or 1000 miliseconds
+        setInterval(() => {
+          clearMessages();
           axios
             .get(`${address}/message`, {
-              headers: {Authorization: token}
+              headers: { Authorization: token },
             })
-            .then(response => {
+            .then((response) => {
               console.log(response);
-              response.data.messages.forEach(message => {
-                if(message.userId === response.data.user)
+              response.data.messages.forEach((message) => {
+                if (message.userId === response.data.user)
                   showMyMessages(message.message);
-                else
-                  showOtherMessages(message.message);
-              })
+                else showOtherMessages(message.message);
+              });
             })
-            .catch(err => console.log(err));
-      })
+            .catch((err) => console.log(err));
+        }, 1000);
+      });
+
+      // Clear all the previous messages
+      function clearMessages() {
+        while (chatMessages.firstChild) {
+          chatMessages.removeChild(chatMessages.firstChild);
+        }
+      }
 
       // To show all the available users in the chat room
       function showUsers(user) {
-        const p = document.createElement('p');
+        const p = document.createElement("p");
 
         p.appendChild(document.createTextNode(user.name));
 
@@ -172,7 +180,7 @@
       }
 
       function showMyMessages(msg) {
-        const myMessage = document.createElement('div');
+        const myMessage = document.createElement("div");
         myMessage.className = "my-message";
 
         myMessage.appendChild(document.createTextNode(msg));
@@ -181,7 +189,7 @@
       }
 
       function showOtherMessages(msg) {
-        const otherMessage = document.createElement('div');
+        const otherMessage = document.createElement("div");
         otherMessage.className = "other-message";
 
         otherMessage.appendChild(document.createTextNode(msg));
@@ -195,22 +203,26 @@
 
         const message = document.getElementById("message").value;
 
-        if(!message) {
+        if (!message) {
           alert("Please Write a message before sending!");
         } else {
           axios
-            .post(`${address}/message/add-message`, {
-              message: message,
-            }, {
-              headers: {Authorization: token}
-            })
-            .then(response => {
+            .post(
+              `${address}/message/add-message`,
+              {
+                message: message,
+              },
+              {
+                headers: { Authorization: token },
+              }
+            )
+            .then((response) => {
               console.log(response);
-              location.reload();
+              // location.reload();
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
-            })
+            });
         }
       }
     </script>
