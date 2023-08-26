@@ -23,9 +23,12 @@ exports.addMessage = async (req, res, next) => {
 
 // Display all the messages from the database
 exports.showMessages = async (req, res, next) => {
+    const lastMessageId = req.params.lastMessageId;
     try {
         const user = req.user.id;
-        const messages = await Message.findAll();
+        const messages = await Message.findAll({
+            attributes: ['id', 'message', 'userId']
+        });
 
         console.log(messages);
         res.status(200).json({ status: true, messages, user, message: "Displayed Message!" });
