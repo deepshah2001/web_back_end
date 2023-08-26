@@ -112,12 +112,6 @@
     <div class="chat-container">
       <div class="chat-header">Chat Room</div>
       <div class="chat-messages">
-        <div class="my-message">
-          <!-- My Messages -->
-        </div>
-        <div class="other-message">
-          <!-- Other Messages -->
-        </div>
       </div>
       <div class="chat-input">
         <input type="text" id="message" placeholder="Write a message!" />
@@ -127,14 +121,20 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const address = "http://localhost:3000";
+      const token = localStorage.getItem('token');
 
       const usersList = document.getElementById("users");
       const send = document.getElementById("send");
+
+      const chatMessages = document.getElementsByClassName('chat-messages')[0];
+      // const myMessage = document.getElementsByClassName("my-message")[0];
+      // const otherMessage = document.getElementsByClassName("other-message")[0];
 
       send.addEventListener('click', newMessage);
 
       // Load all the users in the chat room
       window.addEventListener('DOMContentLoaded', () => {
+        // Get all users
         axios
           .get(`${address}/user/all-users`)
           .then(response => {
@@ -144,6 +144,22 @@
             })
           })
           .catch(err => console.log(err));
+
+          // Get all messages
+          axios
+            .get(`${address}/message`, {
+              headers: {Authorization: token}
+            })
+            .then(response => {
+              console.log(response);
+              response.data.messages.forEach(message => {
+                if(message.userId === response.data.user)
+                  showMyMessages(message.message);
+                else
+                  showOtherMessages(message.message);
+              })
+            })
+            .catch(err => console.log(err));
       })
 
       // To show all the available users in the chat room
@@ -155,12 +171,29 @@
         usersList.appendChild(p);
       }
 
+      function showMyMessages(msg) {
+        const myMessage = document.createElement('div');
+        myMessage.className = "my-message";
+
+        myMessage.appendChild(document.createTextNode(msg));
+
+        chatMessages.appendChild(myMessage);
+      }
+
+      function showOtherMessages(msg) {
+        const otherMessage = document.createElement('div');
+        otherMessage.className = "other-message";
+
+        otherMessage.appendChild(document.createTextNode(msg));
+
+        chatMessages.appendChild(otherMessage);
+      }
+
       // To add new message by the user
       function newMessage(e) {
         e.preventDefault();
 
         const message = document.getElementById("message").value;
-        const token = localStorage.getItem('token');
 
         if(!message) {
           alert("Please Write a message before sending!");
@@ -173,6 +206,7 @@
             })
             .then(response => {
               console.log(response);
+              location.reload();
             })
             .catch(err => {
               console.log(err);

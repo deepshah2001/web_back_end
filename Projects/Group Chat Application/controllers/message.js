@@ -20,3 +20,17 @@ exports.addMessage = async (req, res, next) => {
         res.status(500).json({ status: false, message: "Unable to Add Message to Database!" });
     }
 }
+
+// Display all the messages from the database
+exports.showMessages = async (req, res, next) => {
+    try {
+        const user = req.user.id;
+        const messages = await Message.findAll();
+
+        console.log(messages);
+        res.status(200).json({ status: true, messages, user, message: "Displayed Message!" });
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ status: false, message: "Unable to displayed!" });
+    }
+};
