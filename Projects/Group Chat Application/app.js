@@ -9,6 +9,7 @@ const Message = require('./models/message');
 
 const UserRoutes = require("./routes/user");
 const MessageRoutes = require("./routes/message");
+const GroupRoutes = require("./routes/groups");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors()); // For allowing Cross connection
 
 app.use("/user", UserRoutes);
 app.use("/message", MessageRoutes);
+app.use("/group", GroupRoutes);
 
 app.use("/", (req, res, next) => {
   res.send("Hello there!");

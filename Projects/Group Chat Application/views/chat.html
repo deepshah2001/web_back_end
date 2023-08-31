@@ -117,21 +117,30 @@
         <button id="send">Send</button>
       </div>
     </div>
+    <div id="group">
+      <div id="groups-list"></div>
+      <button type="submit" id="create-group">Create new Group</button>
+      <div>Hello</div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const address = "http://localhost:3000";
       const token = localStorage.getItem("token");
 
-      // const lastMessageId = localStorage.getItem("messages").length;
-
-      const localMessage = [];
+      let localMessage = [];
+      let listOfMessages = JSON.parse(localStorage.getItem("messages")) || "";
+      let lastMessageId = listOfMessages.length;
 
       const usersList = document.getElementById("users");
       const send = document.getElementById("send");
 
+      const createGroup = document.getElementById('create-group');
+
       const chatMessages = document.getElementsByClassName("chat-messages")[0];
 
       send.addEventListener("click", newMessage);
+
+      createGroup.addEventListener('click', newGroup);
 
       // Load all the users in the chat room
       window.addEventListener("DOMContentLoaded", () => {
@@ -149,30 +158,47 @@
         // Get all messages and calls the API every 1 second or 1000 miliseconds
         // setInterval(() => {
         // clearMessages();
+        console.log(lastMessageId);
         axios
           .get(`${address}/message/:${lastMessageId}`, {
             headers: { Authorization: token },
           })
           .then((response) => {
-            console.log(response);
-            response.data.messages.forEach((message) => {
-              let msg = {
-                id: message.id,
-                message: message.message,
-              };
-              localMessage.push(JSON.stringify(msg));
-              if (message.userId === response.data.user)
-                showMyMessages(message.message);
-              else showOtherMessages(message.message);
-              localStorage.setItem("messages", localMessage);
-            });
+            localStorage.setItem(
+              "messages",
+              JSON.stringify(response.data.messages)
+            );
+
+            listOfMessages = JSON.parse(localStorage.getItem("messages")) || [];
+            console.log(listOfMessages);
+
+            if (listOfMessages.length)
+              listOfMessages.forEach((message) => {
+                if (message.userId == response.data.user)
+                  showMyMessages(message.message);
+                else showOtherMessages(message.message);
+              });
+
+            localMessage.push(response.data.messages);
+
+            while (localMessage.length > 10) {
+              localMessage.shift();
+            }
+
+            localStorage.setItem("messages", JSON.stringify(localMessage));
+
+            // response.data.messages.forEach((message) => {
+            //   if (message.userId === response.data.user)
+            //     showMyMessages(message.message);
+            //   else showOtherMessages(message.message);
+            // });
+            lastMessageId = localMessage.length;
+            listOfMessages = JSON.parse(localStorage.getItem("messages"));
           })
           .catch((err) => console.log(err));
-        // }, 10000);
+        // }, 1000);
       });
 
-      const numberOfMessages = localStorage.getItem("messages");
-      console.log(numberOfMessages[0]);
       // Clear all the previous messages
       function clearMessages() {
         while (chatMessages.firstChild) {
@@ -193,7 +219,7 @@
         const myMessage = document.createElement("div");
         myMessage.className = "my-message";
 
-        myMessage.appendChild(document.createTextNode(msg));
+        myMessage.appendChild(document.createTextNode("You: " + msg));
 
         chatMessages.appendChild(myMessage);
       }
@@ -228,12 +254,18 @@
             )
             .then((response) => {
               console.log(response);
-              // location.reload();
+              location.reload();
             })
             .catch((err) => {
               console.log(err);
             });
         }
+      }
+
+      function newGroup(e) {
+        e.preventDefault();
+        
+        axios.post("");
       }
     </script>
   </body>

@@ -1,3 +1,5 @@
+const { Op } = require("sequelize");
+
 const Message = require('../models/message');
 
 exports.addMessage = async (req, res, next) => {
@@ -24,13 +26,16 @@ exports.addMessage = async (req, res, next) => {
 // Display all the messages from the database
 exports.showMessages = async (req, res, next) => {
     const lastMessageId = req.params.lastMessageId;
+    console.log(lastMessageId);
+
     try {
         const user = req.user.id;
         const messages = await Message.findAll({
-            attributes: ['id', 'message', 'userId']
+            attributes: ['id', 'message', 'userId'],
+            where: {id: {[Op.gt]: lastMessageId} }
         });
 
-        console.log(messages);
+        // console.log("Messages: ", messages);
         res.status(200).json({ status: true, messages, user, message: "Displayed Message!" });
     } catch(err) {
         console.log(err);
