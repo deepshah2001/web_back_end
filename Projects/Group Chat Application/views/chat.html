@@ -264,8 +264,14 @@
 
       function newGroup(e) {
         e.preventDefault();
+
+        const groupName = prompt("Enter Group Name!");
         
-        axios.post("");
+        axios.post(`${address}/groups/new-group`, {
+          groupName
+        },{
+          headers: {Authorization: token}
+        });
       }
     </script>
   </body>

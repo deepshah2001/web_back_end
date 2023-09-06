@@ -8,6 +8,8 @@ const getVerified = async (req, res, next) => {
   try {
     const token = req.header("Authorization");
 
+    console.log(token);
+
     if (!token) {
       res.status(401).json({ status: false, message: "No Token Provided!" });
     }

@@ -1,18 +1,19 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
 
-const Group = sequelize.define('group', {
+const GroupMember = sequelize.define("groupmember", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
     },
-    name: {
+    role: {
         type: Sequelize.STRING,
+        defaultValue: 'member',
         allowNull: false,
     },
 });
 
-module.exports = Group;
+module.exports = GroupMember;

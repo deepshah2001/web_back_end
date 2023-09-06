@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post("/add-message", Authentication.getVerified, Message.addMessage);
 
-router.get("/:lastMessageId", Authentication.getVerified, Message.showMessages);
+router.post("/:lastMessageId", Authentication.getVerified, Message.showMessages);
+
+// router.get("/", Authentication.getVerified, Message.showAllMessage);
 
 module.exports = router;

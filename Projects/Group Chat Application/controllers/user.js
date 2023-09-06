@@ -93,9 +93,11 @@ exports.verifyUser = async (req, res, next) => {
 
 // Getting list of all users in the chat room
 exports.allUsers = async (req, res, next) => {
+  const user = req.user.id;
+  console.log(user);
   try {
     const users = await User.findAll();
-    res.status(201).json({ status: true, users, message: "User List!" });
+    res.status(201).json({ status: true, users, message: "User List!", user });
   } catch(err) {
     console.log(err);
     res.status(500).json({ status: false, message: "No User Found!" });
