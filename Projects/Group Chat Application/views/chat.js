@@ -1,6 +1,7 @@
 // Elements and variables to be used
 const address = "http://localhost:3000";
 const token = localStorage.getItem("token");
+const socket = io.connect(`${address}`);
 
 const newGroupBtn = document.getElementById("create-group-btn");
 const modal = document.getElementById("myModal");
@@ -234,6 +235,160 @@ created.addEventListener("click", (e) => {
 });
 
 // Showing all the groups for a user
+// function showGroup(group) {
+//   const button = document.createElement("button");
+//   button.appendChild(document.createTextNode(group.name));
+
+//   // Messages to be displayed and send after a group is selected
+//   button.addEventListener("click", () => {
+//     chatRoom.style.display = "flex";
+//     const id = group.id;
+
+//     console.log(id);
+//     axios
+//       .post(
+//         `${address}/group/all-users`,
+//         {
+//           id,
+//         },
+//         {
+//           headers: { Authorization: token },
+//         }
+//       )
+//       .then((response) => {
+//         console.log("Group's User: ", response.data);
+//         let admin = [];
+
+//         // Finding the admin
+//         response.data.groupUsers.forEach((groupUser) => {
+//           if (groupUser.role === "admin") admin.push(groupUser.id);
+//         });
+
+//         clearMessages(listGroupUsers);
+
+//         if (admin.indexOf(currentUser) === -1) {
+//           response.data.groupUsers.forEach((groupUser) => {
+//             showGroupUsers(groupUser);
+//           });
+//         } else {
+//           response.data.groupUsers.forEach((groupUser) => {
+//             displayGroupUsers(groupUser, id);
+//           });
+//           // Button to add new users to the group
+//           // const newMember = document.createElement("button");
+//           // newMember.appendChild(document.createTextNode("Add Users!"));
+
+//           const deleteGroup = document.createElement("button");
+//           deleteGroup.appendChild(document.createTextNode("Delete Group"));
+
+//           deleteGroup.style.backgroundColor = "red";
+
+//           deleteGroup.addEventListener('click', () => {
+//             axios.post(`${address}/group/delete-group`, {
+//               id
+//             }, {
+//               headers: {Authorization: token}
+//             })
+//             .then(response => alert(response.data.message))
+//             .catch(err => console.log(err));
+//           })
+
+//           // listGroupUsers.appendChild(newMember);
+//           listGroupUsers.appendChild(deleteGroup);
+//           // console.log("Admin");
+//         }
+//       })
+//       .catch((err) => console.log(err));
+//     if (currentInterval) clearInterval(currentInterval);
+//     // Updating the chat after every n seconds
+//     const updateChat = () => {
+//       clearChatRoom(chatGroup);
+//       let groupId = group.id;
+
+//       let groupMessages =
+//         JSON.parse(localStorage.getItem(`Message${groupId}`)) || [];
+//       // console.log(groupMessages);
+//       let lastMessageId = 0;
+//       if (groupMessages.length) {
+//         // console.log(groupMessages[0]);
+//         showMessage(groupMessages[0]);
+//         const lastMessage = groupMessages[groupMessages.length - 1];
+//         // console.log("Group Message: ", groupMessages);
+//         lastMessageId = lastMessage[lastMessage.length - 1].id;
+//       }
+//       // console.log(lastMessageId);
+//       axios
+//         .post(
+//           `${address}/message/${lastMessageId}`,
+//           {
+//             groupId,
+//           },
+//           {
+//             headers: { Authorization: token },
+//           }
+//         )
+//         .then((response) => {
+//           if (response.data.messages.length) {
+//             if (groupMessages.length)
+//               response.data.messages.forEach((message) => {
+//                 groupMessages[0].push(message);
+//               });
+//             else groupMessages.push(response.data.messages);
+//             showMessage(response.data.messages);
+//           }
+//           while (groupMessages.length > 10) {
+//             groupMessages.shift();
+//           }
+//           localStorage.setItem(
+//             `Message${groupId}`,
+//             JSON.stringify(groupMessages)
+//           );
+//           // console.log(response);
+//         })
+//         .catch((err) => console.log(err));
+//     };
+//     updateChat();
+//     currentInterval = setInterval(updateChat, 10000);
+
+//     if (handler) sendMessage.removeEventListener("click", handler);
+//     handler = sendMessageHandle(group);
+//     sendMessage.addEventListener("click", handler);
+//   });
+
+//   groups.appendChild(button);
+// }
+
+// // Adding new message to database and handling it
+// function sendMessageHandle(group) {
+//   return function (e) {
+//     e.preventDefault();
+//     const messageContent = document.getElementById("chat-input");
+//     let message = messageContent.value;
+//     const groupId = group.id;
+//     // console.log("ID: ", groupId);
+//     if (!message) {
+//       alert("Please Write a Message to Send!");
+//     } else {
+//       axios
+//         .post(
+//           `${address}/message/add-message`,
+//           {
+//             message,
+//             groupId,
+//           },
+//           {
+//             headers: { Authorization: token },
+//           }
+//         )
+//         .then((response) => {
+//           messageContent.value = "";
+//           // console.log(response);
+//         })
+//         .catch((err) => console.log(err));
+//     }
+//   };
+// }
+
 function showGroup(group) {
   const button = document.createElement("button");
   button.appendChild(document.createTextNode(group.name));
@@ -274,116 +429,62 @@ function showGroup(group) {
             displayGroupUsers(groupUser, id);
           });
           // Button to add new users to the group
-          const newMember = document.createElement("button");
-          newMember.appendChild(document.createTextNode("Add Users!"));
+          // const newMember = document.createElement("button");
+          // newMember.appendChild(document.createTextNode("Add Users!"));
 
           const deleteGroup = document.createElement("button");
           deleteGroup.appendChild(document.createTextNode("Delete Group"));
 
           deleteGroup.style.backgroundColor = "red";
 
-          deleteGroup.addEventListener('click', () => {
-            axios.post(`${address}/group/delete-group`, {
-              id
-            }, {
-              headers: {Authorization: token}
-            })
-            .then(response => alert(response.data.message))
-            .catch(err => console.log(err));
-          })
+          deleteGroup.addEventListener("click", () => {
+            axios
+              .post(
+                `${address}/group/delete-group`,
+                {
+                  id,
+                },
+                {
+                  headers: { Authorization: token },
+                }
+              )
+              .then((response) => alert(response.data.message))
+              .catch((err) => console.log(err));
+          });
 
-          listGroupUsers.appendChild(newMember);
+          // listGroupUsers.appendChild(newMember);
           listGroupUsers.appendChild(deleteGroup);
-          console.log("Admin");
+          // console.log("Admin");
         }
       })
       .catch((err) => console.log(err));
-    if (currentInterval) clearInterval(currentInterval);
-    // Updating the chat after every n seconds
-    const updateChat = () => {
-      clearChatRoom(chatGroup);
-      let groupId = group.id;
-
-      let groupMessages =
-        JSON.parse(localStorage.getItem(`Message${groupId}`)) || [];
-      // console.log(groupMessages);
-      let lastMessageId = 0;
-      if (groupMessages.length) {
-        // console.log(groupMessages[0]);
-        showMessage(groupMessages[0]);
-        const lastMessage = groupMessages[groupMessages.length - 1];
-        // console.log("Group Message: ", groupMessages);
-        lastMessageId = lastMessage[lastMessage.length - 1].id;
-      }
-      // console.log(lastMessageId);
-      axios
-        .post(
-          `${address}/message/${lastMessageId}`,
-          {
-            groupId,
-          },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((response) => {
-          if (response.data.messages.length) {
-            if (groupMessages.length)
-              response.data.messages.forEach((message) => {
-                groupMessages[0].push(message);
-              });
-            else groupMessages.push(response.data.messages);
-            showMessage(response.data.messages);
-          }
-          while (groupMessages.length > 10) {
-            groupMessages.shift();
-          }
-          localStorage.setItem(
-            `Message${groupId}`,
-            JSON.stringify(groupMessages)
-          );
-          // console.log(response);
-        })
-        .catch((err) => console.log(err));
-    };
-    updateChat();
-    currentInterval = setInterval(updateChat, 10000);
-
-    if (handler) sendMessage.removeEventListener("click", handler);
-    handler = sendMessageHandle(group);
-    sendMessage.addEventListener("click", handler);
   });
 
+  socket.emit("joinRoom", { groupId: group.id });
+
+  if (handler) sendMessage.removeEventListener("click", handler);
+  handler = sendMessageHandle(group);
+  sendMessage.addEventListener("click", handler);
+  
   groups.appendChild(button);
 }
 
-// Adding new message to database and handling it
+socket.on("receiveChatUpdate", (data) => {
+  // Update your chat UI with the new message
+  showMessage(data.message);
+});
+
 function sendMessageHandle(group) {
   return function (e) {
     e.preventDefault();
     const messageContent = document.getElementById("chat-input");
     let message = messageContent.value;
-    const groupId = group.id;
-    // console.log("ID: ", groupId);
+
     if (!message) {
       alert("Please Write a Message to Send!");
     } else {
-      axios
-        .post(
-          `${address}/message/add-message`,
-          {
-            message,
-            groupId,
-          },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((response) => {
-          messageContent.value = "";
-          // console.log(response);
-        })
-        .catch((err) => console.log(err));
+      socket.emit("newMessage", { message, groupId: group.id });
+      messageContent.value = "";
     }
   };
 }
