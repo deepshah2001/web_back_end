@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const http = require("http");
 const socketIo = require("socket.io");
+const cron = require('node-cron');
 
 const { Op } = require("sequelize");
 
@@ -12,6 +13,7 @@ const User = require("./models/user");
 const Message = require("./models/message");
 const Group = require("./models/group");
 const GroupMember = require("./models/groupmember");
+const ArchivedMessage = require("./models/archivedMessage");
 
 const UserRoutes = require("./routes/user");
 const MessageRoutes = require("./routes/message");
@@ -122,6 +124,38 @@ io.on("connection", (socket) => {
   socket.on('connect_error', (error) => {
     console.log('Connection Error: ', error);
 });
+});
+
+cron.schedule('0 0 * * *', async () => { // Runs at midnight (00:00) every day
+  try {
+    // Find messages that are 1 day old or older
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const messagesToArchive = await Message.findAll({
+      where: {
+        message_date: {
+          [Op.lte]: oneDayAgo,
+        },
+      },
+    });
+
+    // Move messages to ArchivedChat
+    await ArchivedMessage.bulkCreate(messagesToArchive.map((message) => message.toJSON()));
+
+    // Delete messages from Chat
+    await Message.destroy({
+      where: {
+        message_date: {
+          [Op.lte]: oneDayAgo,
+        },
+      },
+    });
+
+    console.log('Cron job executed successfully.');
+  } catch (error) {
+    console.error('Cron job failed:', error);
+  }
 });
 
 // User to Message relationship is one to many
