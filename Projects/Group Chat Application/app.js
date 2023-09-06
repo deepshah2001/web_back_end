@@ -19,7 +19,11 @@ const GroupRoutes = require("./routes/groups");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+  }
+});
 
 // require('./routes/message')(io);
 
@@ -86,8 +90,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newMessage", async (data) => {
-    const { message, groupId } = data;
-    const userId = socket.user.id; // Assuming you've set this upon socket connection/authentication
+    const { message, groupId, currentUser } = data;
+    const userId = currentUser; // Assuming you've set this upon socket connection/authentication
 
     try {
       const newMessage = await Message.create({
@@ -95,6 +99,8 @@ io.on("connection", (socket) => {
         message: message,
         groupId: groupId,
       });
+
+      console.log("-----------------", newMessage);
 
       // Send message to everyone in the room (including sender)
       io.to(groupId).emit("receiveChatUpdate", {
@@ -113,6 +119,9 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
+  socket.on('connect_error', (error) => {
+    console.log('Connection Error: ', error);
+});
 });
 
 // User to Message relationship is one to many
@@ -131,6 +140,6 @@ sequelize
   // .sync({ force: true })
   .sync()
   .then(() => {
-    app.listen(3000);
+    server.listen(3000);
   })
   .catch((err) => console.log(err));

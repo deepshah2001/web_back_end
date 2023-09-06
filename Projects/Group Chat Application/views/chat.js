@@ -389,6 +389,43 @@ created.addEventListener("click", (e) => {
 //   };
 // }
 
+socket.on("receiveChatUpdate", (data) => {
+  // Update your chat UI with the new message
+  clearChatRoom(chatGroup);
+  let groupId = group.id;
+
+  let groupMessages =
+    JSON.parse(localStorage.getItem(`Message${groupId}`)) || [];
+  // console.log(groupMessages);
+  let lastMessageId = 0;
+  if (groupMessages.length) {
+    // console.log(groupMessages[0]);
+    showMessage(groupMessages[0]);
+    const lastMessage = groupMessages[groupMessages.length - 1];
+    // console.log("Group Message: ", groupMessages);
+    lastMessageId = lastMessage[lastMessage.length - 1].id;
+  }
+
+  showMessage(data);
+  console.log(data);
+
+  // if (groupMessages.length) {
+  //               response.data.messages.forEach((message) => {
+  //                 groupMessages[0].push(message);
+  //               });
+  //             }
+  //             else groupMessages.push(response.data.messages);
+  //             showMessage(response.data.messages);
+  //           }
+  while (groupMessages.length > 10) {
+    groupMessages.shift();
+  }
+  localStorage.setItem(`Message${groupId}`, JSON.stringify(groupMessages));
+  // listGroupUsers.appendChild(newMember);
+  listGroupUsers.appendChild(deleteGroup);
+  // console.log("Admin");
+});
+
 function showGroup(group) {
   const button = document.createElement("button");
   button.appendChild(document.createTextNode(group.name));
@@ -452,27 +489,17 @@ function showGroup(group) {
               .catch((err) => console.log(err));
           });
 
-          // listGroupUsers.appendChild(newMember);
-          listGroupUsers.appendChild(deleteGroup);
-          // console.log("Admin");
+          socket.emit("joinRoom", { groupId: group.id });
         }
       })
       .catch((err) => console.log(err));
+
+    if (handler) sendMessage.removeEventListener("click", handler);
+    handler = sendMessageHandle(group);
+    sendMessage.addEventListener("click", handler);
   });
-
-  socket.emit("joinRoom", { groupId: group.id });
-
-  if (handler) sendMessage.removeEventListener("click", handler);
-  handler = sendMessageHandle(group);
-  sendMessage.addEventListener("click", handler);
-  
   groups.appendChild(button);
 }
-
-socket.on("receiveChatUpdate", (data) => {
-  // Update your chat UI with the new message
-  showMessage(data.message);
-});
 
 function sendMessageHandle(group) {
   return function (e) {
@@ -483,7 +510,8 @@ function sendMessageHandle(group) {
     if (!message) {
       alert("Please Write a Message to Send!");
     } else {
-      socket.emit("newMessage", { message, groupId: group.id });
+      socket.emit("newMessage", { message, groupId: group.id, currentUser });
+      console.log(message);
       messageContent.value = "";
     }
   };

@@ -7,7 +7,7 @@ exports.createNewGroup = async (req, res, next) => {
   let groupName = req.body.groupName;
   let users = req.body.users;
 
-  console.log(admin, groupName, users);
+//   console.log(admin, groupName, users);
 
   const newGroup = await Group.create({
     name: groupName,
@@ -28,7 +28,7 @@ exports.displayAllGroups = async (req, res, next) => {
     ],
   });
 
-  console.log(user.groups);
+//   console.log(user.groups);
 
   res.status(200).json({ groups: user.groups, currentUser: req.user.id });
 };
@@ -36,7 +36,7 @@ exports.displayAllGroups = async (req, res, next) => {
 exports.displayAllUsers = async (req, res, next) => {
   const { id } = req.body;
 
-  console.log("ID: ", id);
+//   console.log("ID: ", id);
   let groupUsers = [];
 
   Group.findByPk(id, {
@@ -69,7 +69,7 @@ exports.displayAllUsers = async (req, res, next) => {
         groupUsers.push(user);
       });
       res.status(200).json({ groupUsers });
-      console.log("-------------------------", groupUsers);
+    //   console.log("-------------------------", groupUsers);
     })
     .catch((err) => console.log(err));
 };
